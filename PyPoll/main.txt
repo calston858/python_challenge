@@ -1,0 +1,61 @@
+import os
+import csv
+import collections
+from collections import Counter					# Needed for counting votes of each candidate
+
+								# Define variables needed for PyPoll
+candidate_name = [] 
+candidate_votetotal = []
+
+csvpath = os.path.join("Resources", "election_data.csv")	# Define a path for CPU to find CSV file
+
+
+with open(csvpath, newline="") as csvfile:			# with open function *to read selected CSV file
+    csv_reader = csv.reader(csvfile, delimiter=",")
+    csv_header = next(csvfile)					# Variable for first row, which in this file is the header row
+	
+    for row in csv_reader:					# For each row in CSV file, do the following:
+        candidate_name.append(row[2])				# Start row 2, after the header
+
+
+    sorted_list = sorted(candidate_name)			# List for sorting candidates (ascending order)
+    holding_list = sorted_list					# List for holding their name values
+    plus_one_vote = Counter (holding_list) 			# Counts votes per candidate using counter and appends results to votes_per_candidate
+    candidate_votetotal.append(plus_one_vote.most_common())
+
+
+    for item in candidate_votetotal:				# For function used w/ calculations for % of votes per candidate w/ three decimal places
+       
+        first = format((item[0][1])*100/(sum(plus_one_vote.values())),'.3f')
+        second = format((item[1][1])*100/(sum(plus_one_vote.values())),'.3f')
+        third = format((item[2][1])*100/(sum(plus_one_vote.values())),'.3f')
+        last = format((item[3][1])*100/(sum(plus_one_vote.values())),'.3f')
+
+    
+								# Print results for analysis in the terminal following correct layout format
+print("Election Results")
+print("-------------------------")
+print(f"Total Votes: {sum(plus_one_vote.values())}")
+print("-------------------------")
+print(f"{candidate_votetotal[0][0][0]}: {first}% ({candidate_votetotal[0][0][1]})")
+print(f"{candidate_votetotal[0][1][0]}: {second}% ({candidate_votetotal[0][1][1]})")
+print(f"{candidate_votetotal[0][2][0]}: {third}% ({candidate_votetotal[0][2][1]})")
+print(f"{candidate_votetotal[0][3][0]}: {last}% ({candidate_votetotal[0][3][1]})")
+print("-------------------------")
+print(f"Winner: {candidate_votetotal[0][0][0]}")
+print("-------------------------")
+
+election_file = os.path.join("Output", "election_data.txt")	# Create path for new .txt file with Election Results in Output Folder
+with open(election_file, "w") as outfile:			# Open file, then write the following:
+
+    outfile.write("Election Results\n")
+    outfile.write("-------------------------\n")
+    outfile.write(f"Total Votes:  {sum(plus_one_vote.values())}\n")
+    outfile.write("-------------------------\n")
+    outfile.write(f"{candidate_votetotal[0][0][0]}: {first}% ({candidate_votetotal[0][0][1]})\n")
+    outfile.write(f"{candidate_votetotal[0][1][0]}: {second}% ({candidate_votetotal[0][1][1]})\n")
+    outfile.write(f"{candidate_votetotal[0][2][0]}: {third}% ({candidate_votetotal[0][2][1]})\n")
+    outfile.write(f"{candidate_votetotal[0][3][0]}: {last}% ({candidate_votetotal[0][3][1]})\n")
+    outfile.write("-------------------------\n")
+    outfile.write(f"Winner:  {candidate_votetotal[0][0][0]}\n")
+    outfile.write("-------------------------\n")  

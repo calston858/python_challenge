@@ -1,0 +1,161 @@
+import os
+import csv
+
+months = []												#variable names needed to run PyBank
+profit_loss_changes = []										# [] represents text value
+month_count = 0												# 0 represents initial numeric value
+net_profit_loss = 0
+previous_month_amount = 0
+current_month_amount = 0
+total_change = 0
+
+csvpath = os.path.join("Resources", "budget_data.csv")							# Path for CPU to find CSV file
+
+with open(csvpath, newline="") as csvfile:								# Open CSV file:
+	csv_reader = csv.reader(csvfile, delimiter=",")							# Read values from file, seperated by commas
+	csv_header = next(csvfile) 									# Read the header row first
+                 
+	for row in csv_reader:										# For each row in CSV file, do the following:
+		month_count += 1									# Grab number value from column 2
+		current_month_amount = int(row[1])							# New variable to calc net amount of profit/loss
+		net_profit_loss += current_month_amount
+
+		if (month_count == 1):
+			previous_month_amount = current_month_amount 					# Update value of previous month to be equal to current month           
+			continue
+		else:
+			total_change = current_month_amount - previous_month_amount 			# Calc change in profit loss       
+			months.append(row[0])  								# Append each month to the months variable        
+			profit_loss_changes.append(total_change) 					# Append total_change to the profit_loss_changes variable
+			previous_month_amount = current_month_amount 					# Update current_month_loss to be previous_month_profit_loss for next loop
+			sum_profit_loss = sum(profit_loss_changes) 					# Calc sum and average change in profit/loss
+			average_profit_loss = round(sum_profit_loss/(month_count - 1), 2)
+			largest_change = max(profit_loss_changes) 					# Define largest and smallest changes in profit/loss 
+			smallest_change = min(profit_loss_changes)
+			largest_month_index = profit_loss_changes.index(largest_change) 		# Locate the index value of largest and smallest changes in profit/loss 
+			smallest_month_index = profit_loss_changes.index(smallest_change)
+			best_month = months[largest_month_index]   					# Define the best and worst months
+			worst_month = months[smallest_month_index]
+
+								
+print("Financial Analysis:")										# Print instructions for terminal & fit correct formatting
+print("----------------------------")
+print(f"Total Months: {month_count}")
+print(f"Total: ${net_profit_loss}")
+print(f"Average Change: ${average_profit_loss}")
+print(f"Greatest Increase in Profits: {best_month} (${largest_change})")
+print(f"Greatest Decrease in Losses:  {worst_month} (${smallest_change})")
+
+budget_file = os.path.join("Output", "budget_data.txt")							# Define path for new .txt file saved in Output folder inside PyBank
+with open(budget_file, "w") as outfile:									# Write the following:
+
+    outfile.write("Financial Analysis:\n")
+    outfile.write("----------------------------\n")
+    outfile.write(f"Total Months:  {month_count}\n")
+    outfile.write(f"Total:  ${net_profit_loss}\n")
+    outfile.write(f"Average Change:  ${average_profit_loss}\n")
+    outfile.write(f"Greatest Increase in Profits:  {best_month} (${largest_change})\n")
+    outfile.write(f"Greatest Decrease in Losses:  {worst_month} (${smallest_change})\n")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#import os
+#import csv
+
+#csvpath = os.path.join("Resources", "budget_data.csv")
+
+#Date = []
+#profit_loss = []
+#number_months = 0
+#total_profit_loss = 0
+#average_profit_loss = 0
+#average_change = []
+#previous_change = 0
+
+#with open(csvpath, newline = "") as pybank: 
+#	csvreader = csv.reader(pybank, delimiter = ",")
+#	csv_header = next(csvreader)
+
+#	for row in csvreader:
+  
+#		Date.append(row[0])
+#		profit_loss.append(row[1])
+#		number_months += 1
+#		total_profit_loss = total_profit_loss + int(row[1])
+#		average_profit_loss = round(total_profit_loss / (number_months),2)
+#		monthly_change = int(row[1]) - previous_change
+#		previous_change = int(row[1])
+#		average_change.append(monthly_change)
+#		average = sum(average_change) / number_months
+#		greatest_in = max(average_change)
+#		date_increase = Date[average_change.index(greatest_in)]
+#		greatest_de = min(average_change)
+#		date_decrease = Date[average_change.index(greatest_de)]
+ 
+#print(" ")
+#print("Financial Analysis")
+#print("-----------------------------")
+#print(f"Total Months: {number_months}")
+#print(f"Total: ${total_profit_loss}")
+#print(f"Average Change: ${average}")
+#print(f"Average Change: ${average_profit_loss}")
+#print(f"Greatest Increase in Profits: {date_increase} (${greatest_in})")
+#print(f"Greatest Decrease in Profits: {date_decrease} (${greatest_de})")
+
+
+
+
+
+
+
+
+#with open(csvpath, 'r') as file_handler:
+ #    lines = file_handler.read()
+ #    print(lines)
+ #    print(type(lines))
+
+# with open(PyBank_csv) as csvfile:			     #open and read CSV file
+ #   csvreader = csv.reader(csvfile, delimiter=",")
+#    print (csvreader)
+
+#csv_header = next(csvreader)
+#print(f"CSV Header:{csv_header}")
+
+#for row in csvreader:
+#    print(row)
+
+
